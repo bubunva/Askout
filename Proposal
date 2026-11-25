@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>For You ❤️</title>
+<style>
+  body {
+    font-family: "Poppins", sans-serif;
+    background: radial-gradient(circle at bottom, #ffdde1, #ee9ca7);
+    overflow: hidden;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    color: #fff;
+    position: relative;
+  }
+
+  .question-box {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 30px 40px;
+    box-shadow: 0 0 30px rgba(255,255,255,0.3);
+    transition: all 0.5s ease;
+    max-width: 500px;
+    z-index: 2;
+  }
+
+  .question {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .option {
+    background: rgba(255,255,255,0.2);
+    padding: 12px 18px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .option:hover {
+    background: rgba(255,255,255,0.35);
+    transform: scale(1.05);
+  }
+
+  .remark {
+    font-size: 1.2em;
+    opacity: 0;
+    margin-top: 20px;
+    animation: fadeIn 1s forwards;
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+
+  .hearts {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+    top: 0;
+    left: 0;
+  }
+
+  .heart {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 192, 203, 0.2);
+    animation: floatUp 8s linear infinite;
+    transform: rotate(45deg);
+  }
+
+  .heart::before, .heart::after {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: inherit;
+    border-radius: 50%;
+  }
+
+  .heart::before {
+    top: -20px;
+    left: 0;
+  }
+
+  .heart::after {
+    left: -20px;
+    top: 0;
+  }
+
+  @keyframes floatUp {
+    0% {
+      transform: translateY(100vh) rotate(45deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-10vh) rotate(45deg);
+      opacity: 0;
+    }
+  }
+
+  .letter {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fffafc;
+    color: #333;
+    font-family: "Dancing Script", cursive;
+    font-size: 1.6em;
+    padding: 60px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    line-height: 1.8;
+    z-index: 3;
+    animation: fadeIn 2s ease forwards;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap');
+</style>
+</head>
+<body>
+
+<audio id="bgMusic" src="Best part.mp3"></audio>
+
+<div class="hearts"></div>
+
+<div class="question-box" id="quiz">
+  <div class="question" id="question">Do you know how special you are to me?</div>
+  <div class="options" id="options"></div>
+  <div class="remark" id="remark"></div>
+</div>
+
+<div class="letter" id="loveLetter">
+  <p>Hey Nivanshi,</p>
+  <p>I hope you liked this website that I made and I've been making this for around two weeks or so, and I just want to let you know that I really love you. I know you say that I don't care, I know it feels like that sometimes, but I just want to let you know that I really care about you. You mean the world to me now. I mean it's crazy that we met online but you mean a lot to me.</p>
+  <p>The circumstances right now are pretty bad but I'm trying my best to stay in contact with you and you're literally the sweetest girl I've ever met and I want to cherish you for the rest of my life and right now and I do. I pray to God every day for I thank God for giving him like for you know he gave you to me and I think it was fate that brought us together.</p>
+  <p>You say maybe we're not good for each other but I think we are and I'm sorry if I don't express as much but I try my best for you and I will as well. I'm ready to change for you and yeah you're literally so gorgeous and cute. Every time I look at you my heart skips a beat. I love you a lot and I love you, I really do and thank you for this yes.</p>
+  <p>— Joel ❤️</p>
+</div>
+
+<script>
+const questions = [
+  {
+    q: "Do you know how special you are to me?",
+    opts: ["I do", "Not really", "Maybe?"],
+    remarks: ["You should, because you truly are.", "Then let me remind you every day 💖", "Well, you’ll know by the end 😉"]
+  },
+  {
+    q: "What’s your favorite thing about us?",
+    opts: ["Our talks", "Our bond", "Everything"],
+    remarks: ["I feel the same every time we talk 💞", "It’s unbreakable, isn’t it?", "Aww, that’s so cute 😚"]
+  },
+  {
+    q: "If I asked you to be mine, what would you say?",
+    opts: ["Yes", "Let me think", "Maybe later"],
+    remarks: ["Then I’m the happiest person alive 💖", "Take all the time you need, I’ll wait 💫", "Hehe, I’ll make sure it’s a yes next time 😉"]
+  }
+];
+
+let i = 0;
+const questionEl = document.getElementById("question");
+const optionsEl = document.getElementById("options");
+const remarkEl = document.getElementById("remark");
+const letter = document.getElementById("loveLetter");
+const bgMusic = document.getElementById("bgMusic");
+
+function startMusic() {
+  bgMusic.play().catch(() => {
+    document.body.addEventListener('click', () => bgMusic.play(), { once: true });
+  });
+}
+
+function loadQuestion() {
+  if (i >= questions.length) {
+    showLetter();
+    return;
+  }
+  const current = questions[i];
+  questionEl.textContent = current.q;
+  optionsEl.innerHTML = "";
+  remarkEl.style.opacity = 0;
+  current.opts.forEach((opt, idx) => {
+    const btn = document.createElement("div");
+    btn.classList.add("option");
+    btn.textContent = opt;
+    btn.onclick = () => showRemark(idx);
+    optionsEl.appendChild(btn);
+  });
+}
+
+function showRemark(idx) {
+  const current = questions[i];
+  remarkEl.textContent = current.remarks[idx];
+  remarkEl.style.opacity = 1;
+  setTimeout(() => {
+    i++;
+    loadQuestion();
+  }, 3000);
+}
+
+function showLetter() {
+  document.getElementById("quiz").style.display = "none";
+  letter.style.display = "block";
+}
+
+function createHearts() {
+  const container = document.querySelector(".hearts");
+  for (let i = 0; i < 25; i++) {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = 5 + Math.random() * 10 + "s";
+    heart.style.width = heart.style.height = 30 + Math.random() * 50 + "px";
+    container.appendChild(heart);
+  }
+}
+
+createHearts();
+loadQuestion();
+startMusic();
+</script>
+</body>
+</html>
